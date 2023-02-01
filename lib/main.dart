@@ -124,8 +124,11 @@ class _MyAppState extends State<MyApp> {
         FirebaseFirestore.instance.collection('UrunlerFlutter').snapshots();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ürün Envanteri"),
-        backgroundColor: Color.fromARGB(255, 53, 29, 117),
+        title: Text(
+          "Ürün Envanteri",
+          style: TextStyle(color: Color.fromARGB(255, 53, 29, 117)),
+        ),
+        backgroundColor: Colors.amber[600],
       ),
       body: SingleChildScrollView(
         child: Padding(
