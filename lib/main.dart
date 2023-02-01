@@ -282,13 +282,16 @@ class _MyAppState extends State<MyApp> {
                               height: 50,
                               color: Colors.amber[600],
                               child: Center(
-                                child: Text(
-                                    style: TextStyle(
-                                        fontFamily: "Lato",
-                                        fontSize: 13,
-                                        color:
-                                            Color.fromARGB(255, 53, 29, 117)),
-                                    'Ürün Adı: ${data.docs[index]['ad']} , Ürün Idsi: ${data.docs[index]['id']}, Ürün Kategorisi: ${data.docs[index]['kategori']}, Ürün Fiyatı: ${data.docs[index]['fiyat']}'),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      style: const TextStyle(
+                                          fontFamily: "Lato",
+                                          fontSize: 13,
+                                          color:
+                                              Color.fromARGB(255, 53, 29, 117)),
+                                      'Ürün Adı: ${data.docs[index]['ad']} , Ürün Idsi: ${data.docs[index]['id']}, Ürün Kategorisi: ${data.docs[index]['kategori']}, Ürün Fiyatı: ${data.docs[index]['fiyat']}'),
+                                ),
                               ),
                             ),
                           );
