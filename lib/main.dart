@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firestore_ui/firestore_ui.dart';
 import 'dart:math';
 
 Future main() async {
@@ -48,6 +47,9 @@ class _MyAppState extends State<MyApp> {
   late String ad, id, kategori;
   late double fiyat;
 
+  CollectionReference _refUrun =
+      FirebaseFirestore.instance.collection('UrunlerFlutter');
+
   urunAdiAl(urunAdi) {
     this.ad = urunAdi;
   }
@@ -86,6 +88,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   veriOku() async {
+    _refUrun.get();
+    _refUrun.snapshots();
     print("Okundu");
   }
 
@@ -123,135 +127,177 @@ class _MyAppState extends State<MyApp> {
         title: Text("Ürün Envanteri"),
         backgroundColor: Color.fromARGB(255, 53, 29, 117),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Ürün Adı",
-                  fillColor: Colors.white,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 53, 29, 117),
-                      width: 2.0,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: "Ürün Adı",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 53, 29, 117),
+                        width: 2.0,
+                      ),
                     ),
                   ),
+                  onChanged: (String urunAdi) {
+                    urunAdiAl(urunAdi);
+                  },
                 ),
-                onChanged: (String urunAdi) {
-                  urunAdiAl(urunAdi);
-                },
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Ürün Id",
-                  fillColor: Colors.white,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 53, 29, 117),
-                      width: 2.0,
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: "Ürün Id",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 53, 29, 117),
+                        width: 2.0,
+                      ),
                     ),
                   ),
+                  onChanged: (String urunIdsi) {
+                    urunIdsiAl(urunIdsi);
+                  },
                 ),
-                onChanged: (String urunIdsi) {
-                  urunIdsiAl(urunIdsi);
-                },
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Ürün Kategorisi",
-                  fillColor: Colors.white,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 53, 29, 117),
-                      width: 2.0,
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: "Ürün Kategorisi",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 53, 29, 117),
+                        width: 2.0,
+                      ),
                     ),
                   ),
+                  onChanged: (String urunKategorisi) {
+                    urunKategorisiAl(urunKategorisi);
+                  },
                 ),
-                onChanged: (String urunKategorisi) {
-                  urunKategorisiAl(urunKategorisi);
-                },
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Ürün Fiyatı",
-                  fillColor: Colors.white,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 53, 29, 117),
-                      width: 2.0,
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: "Ürün Fiyatı",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 53, 29, 117),
+                        width: 2.0,
+                      ),
                     ),
                   ),
+                  onChanged: (String urunFiyati) {
+                    urunFiyatiAl(urunFiyati);
+                  },
                 ),
-                onChanged: (String urunFiyati) {
-                  urunFiyatiAl(urunFiyati);
-                },
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  ElevatedButton(
-                    onPressed: () {
-                      veriEkle(
-                          ad: ad, id: id, kategori: kategori, fiyat: fiyat);
-                    },
-                    child: Text("  Ekle  "),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.cyan[600],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16))),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      veriOku();
-                    },
-                    child: Text("   Oku   "),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red[600],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16))),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      veriGuncelle(
-                          ad: ad, id: id, kategori: kategori, fiyat: fiyat);
-                    },
-                    child: Text("Güncelle"),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[600],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16))),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      veriSil(id: id);
-                    },
-                    child: Text("   Sil   "),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 48, 8, 226),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16))),
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: () {
+                        veriEkle(
+                            ad: ad, id: id, kategori: kategori, fiyat: fiyat);
+                      },
+                      child: Text("  Ekle  "),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.cyan[600],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16))),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        veriOku();
+                      },
+                      child: Text("   Oku   "),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red[600],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16))),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        veriGuncelle(
+                            ad: ad, id: id, kategori: kategori, fiyat: fiyat);
+                      },
+                      child: Text("Güncelle"),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[600],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16))),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        veriSil(id: id);
+                      },
+                      child: Text("   Sil   "),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 48, 8, 226),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16))),
+                    )
+                  ],
+                ),
               ),
-            ),
-            // FirestoreAnimatedGrid(
-            //     query: query, itemBuilder: itemBuilder, crossAxisCount: 2)
-          ],
+              // FirestoreAnimatedGrid(
+              //     query: query, itemBuilder: itemBuilder, crossAxisCount: 2)
+              Container(
+                  height: 250,
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: dataStream,
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot,
+                    ) {
+                      if (snapshot.hasError) {
+                        return Text('Something went wrong.');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text('Loading');
+                      }
+                      final data = snapshot.requireData;
+
+                      return ListView.builder(
+                        itemCount: data.size,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Container(
+                              height: 50,
+                              color: Colors.amber[600],
+                              child: Center(
+                                child: Text(
+                                    style: TextStyle(
+                                        fontFamily: "Lato",
+                                        fontSize: 13,
+                                        color:
+                                            Color.fromARGB(255, 53, 29, 117)),
+                                    'Ürün Adı: ${data.docs[index]['ad']} , Ürün Idsi: ${data.docs[index]['id']}, Ürün Kategorisi: ${data.docs[index]['kategori']}, Ürün Fiyatı: ${data.docs[index]['fiyat']}'),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  )),
+            ],
+          ),
         ),
       ),
     );
